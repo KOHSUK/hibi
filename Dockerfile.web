@@ -1,0 +1,34 @@
+# ========== Dependencies ==========
+FROM node:22 AS deps
+
+WORKDIR /app
+
+COPY ./ts/web/package.json ./ts/web/package-lock.json ./
+
+RUN npm install
+
+# ========== Builder ==========
+FROM node:22 AS builder
+
+WORKDIR /app
+
+COPY ./ts/web .
+COPY --from=deps /app/node_modules ./node_modules
+
+RUN npm run build
+
+# ========== Runner ==========
+FROM gcr.io/distroless/nodejs22-debian12 as runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+USER nonroot
+
+EXPOSE 3000
+ENV PORT=3000
+
+CMD ["server.js"]
