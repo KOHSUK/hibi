@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": ".",
+			"name": "root"
+		},
+		{
+			"path": "./go"
+		},
+		{
+			"path": "./ts/web"
+		},
+		{
+			"path": "./docs"
+		}
+	]
+}

@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  run-api:
+    desc: Run the API service
+    cmds:
+      - go run ./cmd/api/main.go
+
+  run-bff:
+    desc: Run the BFF service
+    cmds:
+      - go run ./cmd/bff/main.go
