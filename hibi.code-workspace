@@ -13,5 +13,8 @@
 		{
 			"path": "./docs"
 		}
-	]
+	],
+	"settings": {
+		"chatgpt.openOnStartup": true
+	}
 }
