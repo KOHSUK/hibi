@@ -4,16 +4,13 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, Calendar, FileText, CheckSquare, Clock } from "lucide-react"
 
-const TODAY_FORMATTER = new Intl.DateTimeFormat("ja-JP", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  weekday: "long",
-  timeZone: "Asia/Tokyo",
-})
-
 export function DailySummary() {
-  const today = TODAY_FORMATTER.format(new Date())
+  const today = new Date().toLocaleDateString("ja-JP", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  })
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
