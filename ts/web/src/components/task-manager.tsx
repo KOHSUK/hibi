@@ -148,13 +148,13 @@ export function TaskManager() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="mx-auto max-w-7xl px-6 py-4">
+        <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-foreground">タスク</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Notion風の柔軟なプロパティでタスクを管理</p>
+              <h1 className="text-xl font-semibold text-foreground">タスク</h1>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">Notion風の柔軟なプロパティでタスクを管理</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Button variant="outline" size="sm">
                 <Settings className="mr-2 h-4 w-4" />
                 プロパティ設定
@@ -168,9 +168,9 @@ export function TaskManager() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-7xl px-6 py-6">
+      <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6">
         {/* Filters and Search */}
-        <div className="mb-6 flex items-center gap-4">
+        <div className="mb-4 flex items-center gap-3">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -187,14 +187,14 @@ export function TaskManager() {
         </div>
 
         {/* Status Tabs */}
-        <div className="mb-6 flex items-center gap-2 border-b border-border">
+        <div className="mb-4 flex items-center gap-2 border-b border-border">
           {(["all", "not_started", "in_progress", "completed", "overdue"] as const).map((status) => (
             <button
               key={status}
               onClick={() => setSelectedStatus(status)}
               className={cn(
-                "relative px-4 py-2 text-sm font-medium transition-colors",
-                selectedStatus === status ? "text-foreground" : "text-muted-foreground hover:text-foreground",
+                "relative px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                selectedStatus === status ? "text-foreground" : "text-muted-foreground hover:text-foreground"
               )}
             >
               {status === "all" ? "すべて" : statusConfig[status].label}
@@ -205,31 +205,31 @@ export function TaskManager() {
         </div>
 
         {/* Task List */}
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {filteredTasks.map((task) => {
             const StatusIcon = statusConfig[task.status].icon
             return (
               <div
                 key={task.id}
-                className="group flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:bg-accent/50"
+                className="group flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent/50"
               >
                 {/* Status Icon */}
                 <div className="flex-shrink-0">
-                  <StatusIcon className={cn("h-5 w-5", statusConfig[task.status].color)} />
+                  <StatusIcon className={cn("h-4 w-4", statusConfig[task.status].color)} />
                 </div>
 
                 {/* Task Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-sm font-medium text-foreground truncate">{task.title}</h3>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2.5">
+                    <h3 className="truncate text-sm font-medium text-foreground">{task.title}</h3>
                     <Badge
                       variant="secondary"
-                      className={cn("text-xs", statusConfig[task.status].bgColor, statusConfig[task.status].color)}
+                      className={cn("px-2 py-0 text-[11px]", statusConfig[task.status].bgColor, statusConfig[task.status].color)}
                     >
                       {statusConfig[task.status].label}
                     </Badge>
                   </div>
-                  <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
+                  <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground sm:text-xs">
                     {task.dueDate && (
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
@@ -262,7 +262,7 @@ export function TaskManager() {
                 <div className="flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="icon-sm" className="size-8">
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -281,9 +281,9 @@ export function TaskManager() {
 
         {/* Empty State */}
         {filteredTasks.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="rounded-full bg-muted p-3">
-              <Circle className="h-6 w-6 text-muted-foreground" />
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <div className="rounded-full bg-muted p-2.5">
+              <Circle className="h-5 w-5 text-muted-foreground" />
             </div>
             <h3 className="mt-4 text-sm font-medium text-foreground">タスクが見つかりません</h3>
             <p className="mt-1 text-sm text-muted-foreground">検索条件を変更するか、新しいタスクを作成してください</p>
