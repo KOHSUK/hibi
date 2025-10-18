@@ -19,7 +19,7 @@ export function DailySummary() {
       <header className="mb-8">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/tasks">
+            <Link href="/projects">
               <Button
                 variant="ghost"
                 size="icon-sm"

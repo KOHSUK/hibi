@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,8 +15,11 @@ import {
   Clock,
   AlertCircle,
   Calendar,
+  CalendarDays,
   Tag,
   Settings,
+  FolderKanban,
+  ArrowLeft,
 } from "lucide-react"
 import {
   DropdownMenu,
@@ -26,9 +30,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 
-type TaskStatus = "not_started" | "in_progress" | "completed" | "overdue"
+export type TaskStatus = "not_started" | "in_progress" | "completed" | "overdue"
 
-interface Task {
+export interface Task {
   id: string
   title: string
   status: TaskStatus
@@ -37,6 +41,21 @@ interface Task {
   priority?: "low" | "medium" | "high"
   createdAt: string
   updatedAt: string
+}
+
+type ProjectStatus = "planning" | "in_progress" | "on_hold" | "completed"
+
+interface ProjectContext {
+  name: string
+  description?: string
+  status: ProjectStatus
+  startDate?: string
+  endDate?: string
+}
+
+interface TaskManagerProps {
+  project?: ProjectContext
+  initialTasks?: Task[]
 }
 
 const mockTasks: Task[] = [
@@ -119,14 +138,21 @@ const statusConfig = {
   },
 }
 
+const projectStatusConfig: Record<ProjectStatus, { label: string; badgeClass: string }> = {
+  planning: { label: "計画中", badgeClass: "bg-chart-3/10 text-chart-3" },
+  in_progress: { label: "進行中", badgeClass: "bg-chart-1/10 text-chart-1" },
+  on_hold: { label: "保留中", badgeClass: "bg-muted text-muted-foreground" },
+  completed: { label: "完了", badgeClass: "bg-chart-2/10 text-chart-2" },
+}
+
 const priorityConfig = {
   low: { label: "低", color: "text-muted-foreground" },
   medium: { label: "中", color: "text-chart-3" },
   high: { label: "高", color: "text-chart-5" },
 }
 
-export function TaskManager() {
-  const [tasks] = useState<Task[]>(mockTasks)
+export function TaskManager({ project, initialTasks }: TaskManagerProps) {
+  const [tasks] = useState<Task[]>(initialTasks ?? mockTasks)
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | "all">("all")
   const [searchQuery, setSearchQuery] = useState("")
 
@@ -144,6 +170,11 @@ export function TaskManager() {
     overdue: tasks.filter((t) => t.status === "overdue").length,
   }
 
+  const headerTitle = project ? `${project.name}のタスク` : "タスク"
+  const headerSubtitle =
+    project?.description || "Notion風の柔軟なプロパティでタスクを管理"
+  const projectStatusState = project ? projectStatusConfig[project.status] : null
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -151,8 +182,35 @@ export function TaskManager() {
         <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-semibold text-foreground">タスク</h1>
-              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">Notion風の柔軟なプロパティでタスクを管理</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <Link href="/projects">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    className="bg-white text-foreground shadow-sm hover:bg-white/90"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <h1 className="text-xl font-semibold text-foreground">{headerTitle}</h1>
+                {projectStatusState && (
+                  <Badge variant="secondary" className={cn("px-2 py-0 text-[11px]", projectStatusState.badgeClass)}>
+                    {projectStatusState.label}
+                  </Badge>
+                )}
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{headerSubtitle}</p>
+              {project && (
+                <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground sm:text-sm">
+                  {project.startDate && (
+                    <span className="flex items-center gap-1">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      {project.startDate}
+                      {project.endDate ? ` 〜 ${project.endDate}` : ""}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm">

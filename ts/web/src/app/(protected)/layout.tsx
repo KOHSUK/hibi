@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, ListTodo } from "lucide-react";
+import { KanbanSquare, LayoutDashboard, ListTodo } from "lucide-react";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
@@ -7,6 +7,7 @@ import { hasEnvVars } from "@/lib/utils";
 
 const navItems = [
   { href: "/summary", label: "サマリー", icon: LayoutDashboard },
+  { href: "/projects", label: "プロジェクト", icon: KanbanSquare },
   { href: "/tasks", label: "タスク管理", icon: ListTodo },
 ];
 

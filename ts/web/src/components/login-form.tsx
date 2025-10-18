@@ -38,8 +38,8 @@ export function LoginForm({
         password,
       });
       if (error) throw error;
-      // Redirect to task list after successful login.
-      router.push("/tasks");
+      // Redirect to project dashboard after successful login.
+      router.push("/projects");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {

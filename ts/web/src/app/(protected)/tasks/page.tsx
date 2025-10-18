@@ -1,6 +1,7 @@
 import { TaskManager } from "@/components/task-manager"
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { mockProjects } from "@/data/mock-projects";
 
 export default async function TasksPage() {
   const supabase = await createClient();
@@ -10,7 +11,9 @@ export default async function TasksPage() {
     redirect("/auth/login");
   }
 
+  const aggregatedTasks = mockProjects.flatMap((project) => project.tasks);
+
   return (
-      <TaskManager />
+      <TaskManager initialTasks={aggregatedTasks} />
   )
 }

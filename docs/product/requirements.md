@@ -92,6 +92,14 @@ MVP では独自カレンダー（+Google Calendar 連携）、独自 TODO、Dri
 1. WHEN アカウントが作成される THEN システムは単一ユーザーのデータ空間を作成する SHALL  
 2. IF 外部共有/共同編集が要求される THEN MVP では不可能である旨を明示する SHALL
 
+### Requirement 12 — プロジェクト単位のタスク管理
+**User Story:** 複数の取り組みを並行する個人ユーザーとして、TODO をプロジェクト別に整理したい。そうすることで、プロジェクトごとの進捗を可視化して抜け漏れなく進めたい。  
+#### Acceptance Criteria
+1. WHEN ユーザーが新規プロジェクトを作成する THEN システムは名称・目的・期間（開始/終了予定）を登録できるフォームを提供する SHALL  
+2. WHEN TODO を作成/編集する THEN システムは既存プロジェクトへの紐付け（任意）を選択できる UI を表示する SHALL  
+3. WHEN プロジェクト詳細ビューを開く THEN システムは完了/進行中/未着手のタスク数と進捗率を表示し、TODO 一覧をステータス別に整理して表示する SHALL  
+4. WHEN TODO の状態が変化する THEN システムは該当プロジェクトの進捗指標（件数・完了率）を即時更新する SHALL
+
 ## Future Requirements (Post-MVP)
 
 ### Requirement F1 — コントリビューション可視化（GitHub & 他ソース）
